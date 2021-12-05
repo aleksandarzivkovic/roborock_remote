@@ -3,7 +3,7 @@ An example of how you can use python, python-miio, RPi and some electronics and 
 
 This repository is a snapshot of SW and HW that runs in my house so my whole family can use Roborock S5 without the smartphone app. It's not intended to be that much generic so that you just snap in into your envornoment and run. Still, where it is was not too demanding I have tried to stay as generic as possible. With these instructions you should be able to understand how it works and what you need to do to adapt it to your environment. 
 
-## How it works for me
+## How it works
 ### An overview
 The idea is rather simple: python-miio library allows you to control Roborock S5 vacuum cleaner via python script. You can easily run the following actions (the python-miio library can do much more but these are the ones important for us):
  * start the cleaning of the rooms with given IDs
