@@ -56,7 +56,7 @@ Raspberry Pi A+ has 26 GPIO lines exposed. Four lines are taken for home, clean,
 This figure shows how I have connected Raspberry Pi 3 A+ header to a 40 pin flat cable ![](RPi40.png)
 
 This table shows the GPIO lines and their usage in my configuration:
-| GPIO ID  | Direction | Description (just rooms names in Serbian)|
+| GPIO ID  | Direction | Description (just room names in Serbian)|
 | ---      | ---       | ---                        |
 | 2        | Button    | Kupatilo                   |
 | 3        | Button    | Vešernica                  |
@@ -93,6 +93,6 @@ GPIO lines that are connected to push buttons already have pull-up resistors act
 3. Get the vacuum access token. I recommend the method described [here](https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor).
 4. Find out the segment IDs. It is assumed that you have already defined segments for your home and with this step you need to identify the ID of each segment. Use [test.py](test.py) script to manually add numbers and check where your vacuum goes. Small hint here: during the test observe the Android map - when vacuum starts cleaning of the segment an app will mark that segment in its map so you don't need to wait for a vacuum to actually go there.
 5. Here is your DIY part: print your own symbols for segments and make appropriate casing with buttons and LEDs. Can I use the common sentence from web sites about cooking here: please post pictures of your results! :)
-6. Depending on the number of segments wire buttons and LEDs and update the `g_gpioMap` map. Please note that the maximum number of segments that you can address with RPi 3 A+ is 11. If you want more than that, consider implementation of some SPI/I2C GPIO extender and updating of the script. Small note, always first finish wiring and then update map (rather than vice versa) - SW update is easier than HW update.
+6. Wire the buttons and the LEDs and update the `g_gpioMap` map. Please note that the maximum number of segments that you can address with RPi 3 A+ is 11. If you want more than that, consider implementation of SPI/I2C GPIO extender and changing the script. Small hint: order of GPIO lines is not important (as long as you don't mix them with GND, power and other pins on RPi header connector), always first do the wiring and then update the map (rather than vice versa) - SW update is easier than HW update.
 7. Setup a RPi OS so the script is always started at power-up and lock the file system for writing to prevent SD card wearout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote/blob/doc_update/README.md#raspberry-pi-os) TODO: update link from branch to master
 
