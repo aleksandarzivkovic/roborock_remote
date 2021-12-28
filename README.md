@@ -88,6 +88,14 @@ This table shows the GPIO lines and their usage in my configuration:
 GPIO lines that are connected to push buttons already have pull-up resistors activated within a RPi. This gives input lines a logical '1' when inactive. When the button is pressed the line gets connected to GND giving logical '0'. GPIO lines that are connected to LEDs have a current limiting resistor of 330 Ohms.
 
 ## What you need to do so it works for you
+Before you start this you should be familiar with the following skills:
+* setting up an Raspberry Pi - burning SD card, WiFi setup, remote ssh connection
+* wiring - IDC connector and flat cables
+* soldering - buttons, resistors and LEDs
+* woodworking - this depends on which material you will use for the housing
+* simple computer image editing (e.g. using Gimp) - for front panel drawings and printing
+
+Here are most important steps to make your own remote controller:
 1. Place a Raspberry Pi and the vacuum at the same WiFi network
 2. Find a vacuum IP address and fix the IP address of the vacuum. This can be done by checking the list of DHCP clients on your home router and fixing a vacuum IP address based on its MAC address
 3. Get the vacuum access token. I recommend the method described [here](https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor).
