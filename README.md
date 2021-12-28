@@ -1,9 +1,9 @@
 # Roborock S5 RPi remote controller
-An example of how you can use python, python-miio, RPi, some electronics and woodworking to make a remote controller for Roborock S5 vacuum cleaner.
+Welcome to an example of how you can use Python, python-miio, RPi, some electronics and woodworking to make a remote controller for Roborock S5 vacuum cleaner.
 
 The material shown here is a snapshot of SW and HW that runs in my house so my whole family can use Roborock S5 without the smartphone app. The script is not that much generic so that you just snap in into your environment and run. Still, where it was not too demanding I have tried to stay as generic as possible. With these instructions you should be able to understand how it works and what you need to do to adapt it to your environment.
 
-[This video](https://youtu.be/L5m7eMEBG1w) shows how simple it is to start a cleanup of two segments. It also shows the log output of the python script. Having this remote controller doesn't affect functionality of an official MiHome application nor does it require modification of the vacuum itself. The output of the MiHome application is shown at the top left corner of the video.
+[This video](https://youtu.be/L5m7eMEBG1w) shows how simple it is to start a cleanup of two segments. It also shows the log output of the Python script. Having this remote controller doesn't affect functionality of an official MiHome application nor does it require modification of the vacuum itself. The output of the MiHome application is shown at the top left corner of the video.
 
 ## How it works
 ### An overview
@@ -23,7 +23,16 @@ Cleaning procedure can be paused/aborted by pressing the 'home button'.
 
 In our case the vacuum charger (it's home) is hidden below the shoe closet so we cannot access it easily for maintenance reasons. Roboock S5 can be instructed to go to a predefined position for easy maintenance (e.g. near the trash bin) by pressing the 'maintenance button'.
 ### The script
-TODO
+Go to the `---- Main script ----` section in the [vacuum.py](vacuum.py) file and check the main blocks:
+
+`ip,token = SystemInit()` extracts the Roborock's IP address and access token from the calling command line (TODO: add example of command line). Both parameters are needed for the communication with the vacuum. The way of getting them will be explained in [this](https://github.com/aleksandarzivkovic/roborock_remote/tree/doc_update#what-you-should-change-so-it-works-for-you) section. (TODO: replace absolute url with relative).
+
+`g_Vacuum = VacuumThread(ip, token, StatusChange)` will start the thread that initiates communication with the vaccum and checks its status (by pinging it every 5 seconds). Every time a thread detects the modified status a `StatusChange` callback will be triggered. This object contains methods for controlling the vacuum: `clean`,`find`,`home` and `maintenance`. `clean` method has one argument which is a list of segment IDs to be cleaned. For example, here is a map with segment IDs for our home: ![](rooms_mapping.jpg) `maintenance` actually executes goto command which sends vacuum to predefined x,y position. When looking at the Android application map position of the charger is start point of an coordinate system which has coordinates 25500, 25500. In our case maintenance position is 9 meters right and 0.5 meters up, therefore I x and y position are defined as:
+```
+self.m_x = 25500+9000
+self.m_y = 25500+500
+```
+
 ### Where the script lives
 TODO
 
