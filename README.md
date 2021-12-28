@@ -44,10 +44,48 @@ TODO script autostart
 TODO lock the filesystem
 
 #### Hardware
-TODO Add photo of assembled remote front and back
-TODO Name a maximum number of GPIO lines that RPi supports
-TODO List a GPIO lines used in this project
-TODO Pull-ups that I use are TODO Ohms and LED current limiting resistors are TODO Ohms
+The electronic heart of this device is Raspberry Pi 3 A+ with inserted WiFi USB dongle and external 5V power supply. All connections to RPi (5V power, buttons, LEDs) are done via [the 40 pin IDC connector](https://www.digikey.com/en/products/detail/cnc-tech/3030-40-0102-00/3821472) and [the flat cable](https://www.digikey.com/en/products/detail/3m/3302-40-300SF/8256199). The case is made from a 4 mm plywood. The front panel is covered with laminated colour paper print. The device is intended to have a look&feel of an A4 photo frame hanging on the wall. 
+
+Here is the back of the panel:
+![](panel%20-%20back.jpg)
+and here is the front:
+![](panel%20-%20front.jpg)
+
+Raspberry Pi A+ has 26 GPIO lines exposed. Four lines are taken for home, clean, maintenance buttons and heartbeat LED, leaving 22 GPIO lines for segments. Since each segment takes two lines, one for push button and one for LEDs the maximum number of segments supported by this script and HW is 11.
+
+This figure shows how I have connected Raspberry Pi 3 A+ header to a 40 pin flat cable ![](RPi40.png)
+
+This table shows the GPIO lines and their usage in my configuration:
+| GPIO ID  | Direction | Description (just rooms names in Serbian)|
+| ---      | ---       | ---                        |
+| 2        | Button    | Kupatilo                   |
+| 3        | Button    | Vešernica                  |
+| 4        | LED       | Kuhinja                    |
+| 5        | LED       | Status                     |
+| 6        | Button    | Održavanje                 |
+| 7        | Button    | Stop                       |
+| 8        | Button    | Dnevna soba - ispod prozora|
+| 9        | Button    | Dnevna soba - tepih        |
+|10        | LED       | Djordjeva soba             |
+|11        | LED       | Dnevna soba - ispod prozora|
+|12        | Button    | Hodnik - kod vešernice     |
+|13        | LED       | Hodnik - kod vešernice     |
+|14        | Button    | Kuhinja                    |
+|15        | LED       | Kupatilo                   |
+|16        | Button    | Hodnik - kod špajza        |
+|17        | LED       | Vešernica                  |
+|18        | Button    | Spavaća soba               |
+|19        | LED       | Hodnik - kod špajza        |
+|20        | LED       | Hodnik - kod ulaza         |
+|21        | Button    | Start                      |
+|22        | Button    | Isidorina soba             |
+|23        | LED       | Isidorina soba             |
+|24        | Button    | Djordjeva soba             |
+|25        | LED       | Dnevna soba - tepih        |
+|26        | Button    | Hodnik - kod ulaza         |
+|27        | LED       | Spavaća soba               |
+
+GPIO lines that are connected to push buttons already have pull-up resistors activated within a RPi. This gives input lines a logical '1' when inactive. When the button is pressed the line gets connected to GND giving logical '0'. GPIO lines that are connected to LEDs have a current limiting resistor of 330 Ohms.
 
 ## What you need to do so it works for you
 1. Place a Raspberry Pi and the vacuum at the same WiFi network
@@ -55,6 +93,6 @@ TODO Pull-ups that I use are TODO Ohms and LED current limiting resistors are TO
 3. Get the vacuum access token. I recommend the method described [here](https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor).
 4. Find out the segment IDs. It is assumed that you have already defined segments for your home and with this step you need to identify the ID of each segment. Use [test.py](test.py) script to manually add numbers and check where your vacuum goes. Small hint here: during the test observe the Android map - when vacuum starts cleaning of the segment an app will mark that segment in its map so you don't need to wait for a vacuum to actually go there.
 5. Here is your DIY part: print your own symbols for segments and make appropriate casing with buttons and LEDs. Can I use the common sentence from web sites about cooking here: please post pictures of your results! :)
-6. Depending on the number of segments wire buttons and LEDs and update the `g_gpioMap` map
-7. Setup a RPi OS so the script is always started at power-up and lock the filesystem for writting to prevent SD card wareout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote/blob/doc_update/README.md#raspberry-pi-os) TODO: update link from branch to master
+6. Depending on the number of segments wire buttons and LEDs and update the `g_gpioMap` map. Please note that the maximum number of segments that you can address with RPi 3 A+ is 11. If you want more than that, consider implementation of some SPI/I2C GPIO extender and updating of the script. Small note, always first finish wiring and then update map (rather than vice versa) - SW update is easier than HW update.
+7. Setup a RPi OS so the script is always started at power-up and lock the file system for writing to prevent SD card wearout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote/blob/doc_update/README.md#raspberry-pi-os) TODO: update link from branch to master
 
