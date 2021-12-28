@@ -48,7 +48,7 @@ The electronic heart of this device is Raspberry Pi 3 A+ with inserted WiFi USB 
 
 Here is the back of the panel:
 ![](panel%20-%20back.jpg)
-and here is the front:
+and here is the front (TODO: update picture when I add wooden frame to hide the panel edges):
 ![](panel%20-%20front.jpg)
 
 Raspberry Pi A+ has 26 GPIO lines exposed. Four lines are taken for home, clean, maintenance buttons and heartbeat LED, leaving 22 GPIO lines for segments. Since each segment takes two lines, one for push button and one for LEDs the maximum number of segments supported by this script and HW is 11.
