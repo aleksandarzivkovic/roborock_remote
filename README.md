@@ -40,11 +40,14 @@ Since this remote device has many buttons and LEDs the important point is the `g
 ### Where the script runs
 
 #### Raspberry Pi OS
-TODO
+TODO script autostart
+TODO lock the filesystem
 
 #### Hardware
-TODO
-Pull-ups that I use are TODO Ohms and LED current limiting resistors are TODO Ohms
+TODO Add photo of assembled remote front and back
+TODO Name a maximum number of GPIO lines that RPi supports
+TODO List a GPIO lines used in this project
+TODO Pull-ups that I use are TODO Ohms and LED current limiting resistors are TODO Ohms
 
 ## What you need to do so it works for you
 1. Place a Raspberry Pi and the vacuum at the same WiFi network
@@ -53,5 +56,5 @@ Pull-ups that I use are TODO Ohms and LED current limiting resistors are TODO Oh
 4. Find out the segment IDs. It is assumed that you have already defined segments for your home and with this step you need to identify the ID of each segment. Use [test.py](test.py) script to manually add numbers and check where your vacuum goes. Small hint here: during the test observe the Android map - when vacuum starts cleaning of the segment an app will mark that segment in its map so you don't need to wait for a vacuum to actually go there.
 5. Here is your DIY part: print your own symbols for segments and make appropriate casing with buttons and LEDs. Can I use the common sentence from web sites about cooking here: please post pictures of your results! :)
 6. Depending on the number of segments wire buttons and LEDs and update the `g_gpioMap` map
-7. Setup a RPi OS so the script is always started at power-up and lock the filesystem for writting to prevent SD card wareout. The details are described [here]()
+7. Setup a RPi OS so the script is always started at power-up and lock the filesystem for writting to prevent SD card wareout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote/blob/doc_update/README.md#raspberry-pi-os) TODO: update link from branch to master
 
