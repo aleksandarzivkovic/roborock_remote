@@ -25,7 +25,7 @@ In our case the vacuum charger (it's home) is hidden below the shoe closet so we
 ### The script
 Go to the `---- Main script ----` section in the [vacuum.py](vacuum.py) file and check the main blocks:
 
-`ip,token = SystemInit()` extracts the Roborock's IP address and access token from the calling command line (TODO: add example of command line). Both parameters are needed for the communication with the vacuum. The way of getting them will be explained in [this](https://github.com/aleksandarzivkovic/roborock_remote/tree/doc_update#what-you-should-change-so-it-works-for-you) section. (TODO: replace absolute url with relative). A script logging mechanism is defined here. Logs will go to a standard output and to file `/tmp/vacuum.log`. Log file size is limited to a maximum of 1MB with keeping the last 5 log files. A `Ctrl+C` handler is defined here, which is handy during the debugging phase. 
+`ip,token = SystemInit()` extracts the Roborock's IP address and access token from the calling command line. Both parameters are needed for the communication with the vacuum. The way of getting them is explained in [this section](https://github.com/aleksandarzivkovic/roborock_remote#what-you-need-to-do-so-it-works-for-you). `SystemInit()` also defines a script logging mechanism. Logs will go to a standard output and to file `/tmp/vacuum.log`. Log file size is limited to a maximum of 1MB with keeping the last 5 log files. A `Ctrl+C` handler is defined here, which is handy during the debugging phase. 
 
 `g_Vacuum = VacuumThread(ip, token, StatusChange)` loads `python-miio` library and runs the thread that initiates communication with the vacuum and checks its status (by pinging it every 5 seconds). Every time a thread detects the modified status a `StatusChange` callback will be triggered. This object contains methods for controlling the vacuum: `clean`,`find`,`home` and `maintenance`. `clean` method has one argument which is a list of segment IDs to be cleaned. For example, here is a map with segment IDs for our home: ![](rooms_mapping.jpg) `maintenance` actually executes goto command which sends vacuum to a predefined x,y position. When looking at the Android application map the position of the charger is the coordinate system start point (with coordinates 25500, 25500). In our case the maintenance position is 9m right and 0.5m up, therefore x,y positions are defined as:
 ```
@@ -40,8 +40,20 @@ Since this remote device has many buttons and LEDs the important point is the `g
 ### Where the script runs
 
 #### Raspberry Pi OS
-TODO script autostart
-TODO lock the filesystem
+In order to start the Python script the IP address and token should be provided. Here is example on how the script is manually started in my environment:
+```
+/usr/bin/python3 /home/pi/ws/vacuum.py 192.168.100.185 6c3166372a61646b33736a3771546361
+```
+
+The vacuum.py script automatic startup on Raspberry Pi power-on can be set with services. Copy the file [vacuum.service](vacuum.service) to location `/lib/systemd/system` and execute the following commands:
+```
+sudo chmod 644 /lib/systemd/system/vacuum.service
+sudo systemctl daemon-reload
+sudo systemctl enable vacuum.service
+sudo reboot
+```
+
+After functionality is confirmed the good habit is to lock the file system for writing to prevent Raspberry Pi SD card wearout. This can be done by using the `raspi-config` tool and going to `Advanced Options -> Overlay FS (Enable/Disable read-only file system)`.
 
 #### Hardware
 The electronic heart of this device is Raspberry Pi 3 A+ with inserted WiFi USB dongle and external 5V power supply. All connections to RPi (5V power, buttons, LEDs) are done via [the 40 pin IDC connector](https://www.digikey.com/en/products/detail/cnc-tech/3030-40-0102-00/3821472) and [the flat cable](https://www.digikey.com/en/products/detail/3m/3302-40-300SF/8256199). The case is made from a 4 mm plywood. The front panel is covered with laminated colour paper print. The device is intended to have a look&feel of an A4 photo frame hanging on the wall. 
@@ -102,5 +114,5 @@ Here are most important steps to make your own remote controller:
 4. Find out the segment IDs. It is assumed that you have already defined segments for your home and with this step you need to identify the ID of each segment. Use [test.py](test.py) script to manually add numbers and check where your vacuum goes. Small hint here: during the test observe the Android map - when vacuum starts cleaning of the segment an app will mark that segment in its map so you don't need to wait for a vacuum to actually go there.
 5. Here is your DIY part: print your own symbols for segments and make appropriate casing with buttons and LEDs. Can I use the common sentence from web sites about cooking here: please post pictures of your results! :)
 6. Wire the buttons and the LEDs and update the `g_gpioMap` map. Please note that the maximum number of segments that you can address with RPi 3 A+ is 11. If you want more than that, consider implementation of SPI/I2C GPIO extender and changing the script. Small hint: order of GPIO lines is not important (as long as you don't mix them with GND, power and other pins on RPi header connector), always first do the wiring and then update the map (rather than vice versa) - SW update is easier than HW update.
-7. Setup a RPi OS so the script is always started at power-up and lock the file system for writing to prevent SD card wearout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote/blob/doc_update/README.md#raspberry-pi-os) TODO: update link from branch to master
+7. Setup a RPi OS so the script is always started at power-up and lock the file system for writing to prevent SD card wearout. The details are described [here](https://github.com/aleksandarzivkovic/roborock_remote#raspberry-pi-os)
 
