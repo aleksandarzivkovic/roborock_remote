@@ -1,0 +1,11 @@
+[Unit]
+Description=Roborock Remote Control Script
+After=network.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python3 /home/pi/ws/vacuum.py "192.168.100.185" "6c3166372a61646b33736a3771546361"
+User=pi
+
+[Install]
+WantedBy=multi-user.target
